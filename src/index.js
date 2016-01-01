@@ -9,14 +9,8 @@ var Timer = React.createClass({
 var updateConditions = function() {
   var recordedSecond = null
 
-  var index = 0
-  var animationPositions = [true, false, false, false]
-  // var topToBottom = true
-  // var rightToLeft = false
-  // var bottomToTop = false
-  // var leftToRight = false
-
-
+  var  movingBgIndex = 0
+  var bgMoveConditions = [true, false, false, false]
 
   setInterval(function() {
     var dateFormat = new DateFormat("HH mm ss");
@@ -32,54 +26,86 @@ var updateConditions = function() {
 
     if(secondNow !== recordedSecond){
       ReactDOM.render(
-        <BackGround topToBottom={animationPositions[0]} rightToLeft={animationPositions[1]} bottomToTop={animationPositions[2]} leftToRight={animationPositions[3]} />,
+        <BackGrounds top="true" right="true" bottom="true" left="true" activateTop={bgMoveConditions[0]} activateRight={bgMoveConditions[1]} activateBottom={bgMoveConditions[2]} activateLeft={bgMoveConditions[3]} />,
         document.getElementById('bg')
       );
-      animationPositions[index] = false
+      //bgMoveConditions[movingBgIndex] = false
+      var prevIndex = movingBgIndex
 
-      if(index > 2) {
-        index = 0;
-      } else {
-        index += 1;
+      if(movingBgIndex === 0){
+        movingBgIndex += 1
+      } else if (movingBgIndex%3 === 0){
+        movingBgIndex = 0;
+      }else{
+        movingBgIndex += 1
       }
 
-      animationPositions[index] = true
+      var offTarget = null
+      switch (movingBgIndex) {
+        case 0: 
+          offTarget = 2;
+          bgMoveConditions[offTarget] = false
+          bgMoveConditions[3] = false
+          break;
+        case 1:
+          offTarget = 3;
+          break;
+        case 2:
+          offTarget = 0;
+          break;
+        case 3:
+          offTarget = 1;
+          break;
+      }
+      // console.log(offTarget)
+      bgMoveConditions[offTarget] = false
+      bgMoveConditions[movingBgIndex] = true
       recordedSecond = secondNow
-      console.log(animationPositions)
     }
-
+    //console.log(bgMoveConditions)
   }, 500);
 }
 
 updateConditions();
 
 var BackGround = React.createClass({
-
   render: function(){
     var bgClasses = classNames({
-      'background': true,
-      'top-to-bottom': this.props.topToBottom,
-      'right-to-left': this.props.rightToLeft,
-      'bottom-to-top': this.props.bottomToTop,
-      'left-to-right': this.props.leftToRight,
+      "background": true,
+      "top": this.props.top, 
+      "right": this.props.right, 
+      "bottom": this.props.bottom, 
+      "left": this.props.left, 
+       "on": this.props.on,
     });
-    return (
+
+    return(
       <div className={bgClasses}></div>
-    );
+    )
   }
-});
+})
 
-var changeBg = function(){
-  var condition = false
-  setInterval(function() {
-  }, 1000)
-}
+var BackGrounds = React.createClass({
+  render: function() {
+     return (
+        <div>
+          <BackGround top={this.props.top} on={this.props.activateTop}/>
+          <BackGround right={this.props.right} on={this.props.activateRight}/>
+          <BackGround bottom={this.props.bottom} on={this.props.activateBottom}/>
+          <BackGround left={this.props.left} on={this.props.activateLeft}/>
+        </div>
+      )
+  }
+})
 
-changeBg();
+
+ReactDOM.render(
+  <BackGrounds top="true" right="true" bottom="true" left="true" /> ,
+  document.getElementById('bg')
+)
 
 var AudioPlayer = React.createClass({
     render: function() {
-        console.info('[AudioPlayer] render...');
         return (
             <audio ref="audio_tag" src={this.props.src} autoPlay={this.props.autoPlay}></audio>
         );

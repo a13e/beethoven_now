@@ -42,7 +42,7 @@ var updateConditions = function() {
 
       var offTarget = null
       switch (movingBgIndex) {
-        case 0: 
+        case 0:
           offTarget = 2;
           bgMoveConditions[offTarget] = false
           bgMoveConditions[3] = false
@@ -72,10 +72,10 @@ var BackGround = React.createClass({
   render: function(){
     var bgClasses = classNames({
       "background": true,
-      "top": this.props.top, 
-      "right": this.props.right, 
-      "bottom": this.props.bottom, 
-      "left": this.props.left, 
+      "top": this.props.top,
+      "right": this.props.right,
+      "bottom": this.props.bottom,
+      "left": this.props.left,
        "on": this.props.on,
     });
 
@@ -113,6 +113,6 @@ var AudioPlayer = React.createClass({
 });
 
 ReactDOM.render(
-  <AudioPlayer src="https://dl.dropboxusercontent.com/u/73228358/beethoven/Symphony9.mp3" autoPlay="true" />,
+  <AudioPlayer src="../assets/audio/Beethoven_Symphony9.mp3" autoPlay="true" />,
   document.getElementById('audioWrapper')
 );

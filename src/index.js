@@ -113,6 +113,6 @@ var AudioPlayer = React.createClass({
 });
 
 ReactDOM.render(
-  <AudioPlayer src="../assets/audio/Beethoven_Symphony9.mp3" autoPlay="true" />,
+  <AudioPlayer src="assets/audio/Beethoven_Symphony9.mp3" autoPlay="true" />,
   document.getElementById('audioWrapper')
 );
